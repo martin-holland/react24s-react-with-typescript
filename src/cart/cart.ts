@@ -1,19 +1,34 @@
+import { CartItem } from "../types/cart";
 import { Product } from "../types/product";
 
 class Cart {
-  private items: Product[] = [];
+  private items: CartItem[] = [];
 
-  addItem(item: Product) {
-    this.items.push(item);
-    console.log(`${item.title} added to cart`);
+  addItem(product: Product) {
+    const existingItem = this.items.find(item => item.id === product.id);
+    if (existingItem) {
+      existingItem.quantity += 1;
+      console.log(`${product.title} quantity increased to ${existingItem.quantity}`);
+    } else {
+      this.items.push({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        quantity: 1
+      });
+      console.log(`${product.title} added to cart`);
+    }
   }
 
-  removeItem(item: Product) {
-    this.items = this.items.filter((i) => i.id !== item.id);
-    console.log(`${item.title} removed from cart`);
+  removeItem(id: number) {
+    const item = this.items.find(i => i.id === id);
+    if (item) {
+      this.items = this.items.filter(i => i.id !== id);
+      console.log(`${item.title} removed from cart`);
+    }
   }
 
-  getItems() {
+  getItems(): CartItem[] {
     return this.items;
   }
 
@@ -23,4 +38,5 @@ class Cart {
   }
 }
 
-export default Cart;
+// Create a single instance to be used throughout the app
+export const cart = new Cart();
