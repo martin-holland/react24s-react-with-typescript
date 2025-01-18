@@ -26,6 +26,7 @@ const SingleProduct = () => {
     }
   }, [product, productId.id]);
 
+  // The below product?. handles the case if the product is still undefined after attempting to call the API
   return (
     <div>
       <p>{product?.title}</p>
